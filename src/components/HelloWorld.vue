@@ -1,39 +1,62 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="hello" ref="hello">
+    <loading v-if="loading"></loading>
+    <div id="left_pan" >
+      <div @click="toEdu()">A CONSTANT LEARNER</div>
+      <div @click="toWork(0)">A SOFTWARE ENGINEER</div>
+      <div @click="toWork(1)">AN ART-LOVER</div>
+      <div @click="toContact()">AND MORE...</div>
+    </div>
+    <div id="img" style="width: 70%;" ref="imgPanel">
+      <img 
+        :onload="loadFin()"
+        src="../assets/homepagePic-01.jpg"
+        style="object-fit: contain; height: 95%; margin-right:5%; align: right" />
+    </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'HelloWorld',
+  data() {
+    return {
+      clientHeight: "",
+      loading: true,
+    }
+  },
+  mounted() {
+    this.clientHeight =   `${document.documentElement.clientHeight}`  
+
+    let that = this
+    window.onresize = function temp() {
+      that.clientHeight = `${document.documentElement.clientHeight}`;
+    };
+  },
+  watch: {
+    clientHeight: function () {
+      this.changeFixed(this.clientHeight)
+    }
+  },
+  methods: {
+    loadFin() {
+      this.loading = false;
+    },
+    changeFixed(clientHeight) {
+      var temp = clientHeight - 70;
+      this.$refs.hello.style.height = temp + 'px';
+    },
+    toEdu() {
+      this.$router.push({name: 'About', params: {jump: true}})
+    },
+    toWork(index) {
+      this.$router.push({name: 'Works', params: {jump: index}})
+    },
+    toContact() {
+      this.$router.push({name: 'Contact'});
+    }
+  },
   props: {
     msg: String
   }
@@ -42,18 +65,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.hello {
+  display:flex;
+  justify-content: center;
+  width: 100%;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+#left_pan {
+  
+  display: flex; 
+  flex-direction:column;
+  justify-content: flex-end;
+  height: 95%;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+#left_pan > div {
+  text-align: right;
+  margin: 5px 10px 10px 30px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 25px;
 }
-a {
-  color: #42b983;
+#left_pan > div:hover {
+  text-decoration: underline;
+  color: #3EBFCA;
+  cursor: pointer;
 }
 </style>

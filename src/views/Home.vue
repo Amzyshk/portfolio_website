@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div style="text-align: right; margin: 10px 5%">©2020 Zhiying Ma</div>
   </div>
 </template>
 
